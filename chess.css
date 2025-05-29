@@ -1,0 +1,416 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #1a1a2e);
+    font-family: "Poppins", sans-serif;
+    color: #e6e6e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+/* Board Container */
+.board-container {
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#board {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin: auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 4px solid #1a1a2e;
+    background: #e8ebf0;
+}
+
+/* Board Squares */
+#board > div {
+    width: 100%;
+    height: 12.5%;
+    display: flex;
+}
+
+#board .square {
+    width: 12.5%;
+    height: 100%;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#board .even div:nth-child(even),
+#board .odd div:nth-child(odd) {
+    background: #f0d9b5;
+}
+
+#board .even div:nth-child(odd),
+#board .odd div:nth-child(even) {
+    background: #b58863;
+}
+
+/* Piece Styling */
+img.piece {
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    padding: 8px;
+    object-fit: contain;
+}
+
+img.piece:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+}
+
+img.piece:active {
+    transform: scale(0.95);
+}
+
+/* Move Indicators */
+.allowed {
+    position: relative;
+}
+
+.allowed::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 30%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.4; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+}
+
+/* Turn Indicator */
+#turn {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 15px 0;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Game Controls */
+.game-controls {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+#newGameBtn, .flip-board {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+#newGameBtn:hover, .flip-board:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}
+
+/* Timer Styling */
+.timer-container {
+    display: flex;
+    gap: 20px;
+}
+
+.timer {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-family: 'Roboto Mono', monospace;
+    min-width: 100px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* Move History */
+.move-history-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.move-history-container h3 {
+    color: #fff;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.move-history {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.move-history div {
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.move-history div:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Sematary Styling */
+.semataries {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.sematary {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    flex: 1;
+}
+
+.sematary img {
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
+    transition: transform 0.3s ease;
+}
+
+.sematary img:hover {
+    transform: scale(1.2);
+}
+
+/* Scene Styling */
+.scene {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.scene.show {
+    display: flex;
+}
+
+.scene-content {
+    background: rgba(26, 26, 46, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    color: #fff;
+}
+
+.scene-content h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+/* Radio Buttons */
+input[type="radio"] {
+    display: none;
+}
+
+label {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8em;
+    font-size: 1.2em;
+}
+
+label:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+/* Last Move Highlight */
+.last-move {
+    position: relative;
+}
+
+.last-move::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid rgba(255, 215, 0, 0.6);
+    pointer-events: none;
+    animation: highlightPulse 2s infinite;
+}
+
+.clicked-square {
+    position: relative;
+}
+
+.clicked-square::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 3px solid rgba(74, 144, 226, 0.6);
+    pointer-events: none;
+}
+
+@keyframes highlightPulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 0.3; }
+    100% { opacity: 0.6; }
+}
+
+/* Board Rotation */
+.animate {
+    animation: rotateBoard 1s ease-out forwards;
+}
+
+.animate-backward {
+    animation: rotateBoardBackward 1s ease-out forwards;
+}
+
+@keyframes rotateBoard {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(180deg); }
+}
+
+@keyframes rotateBoardBackward {
+    0% { transform: rotate(180deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.forward {
+    transform: rotate(180deg);
+}
+
+.backward {
+    transform: rotate(0deg);
+}
+
+/* Flip Board Button */
+.flip-board {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .board-container {
+        padding: 15px;
+        width: 95%;
+    }
+
+    .game-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .timer-container {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    label {
+        padding: 8px 16px;
+        font-size: 1em;
+    }
+
+    .scene-content {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .flip-board {
+        bottom: 10px;
+        left: 10px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .move-history-container {
+        max-height: 150px;
+    }
+}
